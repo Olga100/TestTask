@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import ContactsList from '../../components/ContactsList';
-import ContactDetails from  '../../components/ContactDetails';
-import ContactDetailsForm from  '../../components/ContactDetailsForm';
+import ContactDetails from '../../components/ContactDetails';
+import ContactDetailsForm from '../../components/ContactDetailsForm';
 import {loadContacts, loadSelectedContact, editDetails, endEditDetails} from '../../actions/actions';
 
 
@@ -11,6 +11,14 @@ import './MainPage.css';
 
 
 class MainPageView extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            createNewContact: false
+        };
+    }
+
 
     componentDidMount() {
         const {loadContacts} = this.props;
@@ -23,6 +31,33 @@ class MainPageView extends Component {
         loadSelectedContact(id);
     };
 
+    showCreateNewContact = () => {
+        this.setState({createNewContact: true});
+    };
+
+    hideCreateNewContact = () => {
+        this.setState({createNewContact: false});
+    };
+
+    handleEditDetails = () => {
+        const {editDetails} = this.props;
+
+        this.setState({createNewContact: false}, editDetails );
+    };
+
+    renderCreateForm = () => {
+        const {createNewContact} = this.state;
+
+        if (createNewContact) {
+            const {endEditDetails} = this.props;
+
+            endEditDetails();
+            return <ContactDetailsForm
+                onSubmit={() => console.log("created new Contact!")}
+                onCancel={ this.hideCreateNewContact}/>
+
+        }
+    }
 
     renderDetails() {
         const {selectedContact, editDetails, endEditDetails, isEditingDetails} = this.props;
@@ -33,29 +68,34 @@ class MainPageView extends Component {
                     initialValues={selectedContact}
                     onSubmit={() => console.log({selectedContact})}
                     onCancel={endEditDetails}/>;
-            }
-            else {
+            } else {
                 return (<div>
                     <ContactDetails contact={selectedContact}/>
                     <div className="button-wrapper">
-                        <button onClick={editDetails}>Edit</button>
+                        <button onClick={this.handleEditDetails}>Edit</button>
                         <button onClick={null}>Delete</button>
                     </div>
                 </div>);
             }
-        }
-        else {
+        } else {
             return null;
         }
     }
 
     render() {
-        const {contacts}  = this.props;
+        const {contacts} = this.props;
+
 
         return (
             <div className="main-page-container">
                 <div className="main-page-container__contact-list">
                     <ContactsList contacts={contacts} onContactSelected={this.getSelectedContact}/>
+                    <div className="button-wrapper">
+                        <button onClick={this.showCreateNewContact}>Create New Contact</button>
+                    </div>
+                </div>
+                <div className="create-new-contact-wrapper">
+                {this.renderCreateForm()}
                 </div>
                 <div className="main-page-container__contact-detail">
                     {this.renderDetails()}

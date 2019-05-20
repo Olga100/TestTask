@@ -32,8 +32,10 @@ class ContactDetailsForm extends Component {
                     type="email"
                     placeholder="email"
                 />
+                <div className="form-button-wrapper">
                 <button type="submit" label="submit">Submit</button>
                 <button onClick={onCancel}>Cancel</button>
+                </div>
             </form>
         );
     }
