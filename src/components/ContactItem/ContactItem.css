@@ -1,0 +1,9 @@
+.contact-info {
+    margin-bottom: 10px;
+    font-size: 22px;
+    color: darkgray;
+}
+
+li {
+    cursor: pointer;
+}

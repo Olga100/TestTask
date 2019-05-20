@@ -1,0 +1,23 @@
+.main-page-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.main-page-container__contact-list {
+    margin-right: 100px;
+}
+
+.main-page-container__contact-detail {
+
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+.button-wrapper button {
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(131,118,135, 1);
+}
