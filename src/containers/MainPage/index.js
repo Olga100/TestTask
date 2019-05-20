@@ -42,7 +42,7 @@ class MainPageView extends Component {
     handleEditDetails = () => {
         const {editDetails} = this.props;
 
-        this.setState({createNewContact: false}, editDetails );
+        this.setState({createNewContact: false}, editDetails);
     };
 
     renderCreateForm = () => {
@@ -55,12 +55,11 @@ class MainPageView extends Component {
             return <ContactDetailsForm
                 onSubmit={() => console.log("created new Contact!")}
                 onCancel={ this.hideCreateNewContact}/>
-
         }
-    }
+    };
 
     renderDetails() {
-        const {selectedContact, editDetails, endEditDetails, isEditingDetails} = this.props;
+        const {selectedContact, endEditDetails, isEditingDetails} = this.props;
 
         if (selectedContact) {
             if (isEditingDetails) {
@@ -86,21 +85,26 @@ class MainPageView extends Component {
         const {contacts} = this.props;
 
 
-        return (
-            <div className="main-page-container">
-                <div className="main-page-container__contact-list">
-                    <ContactsList contacts={contacts} onContactSelected={this.getSelectedContact}/>
-                    <div className="button-wrapper">
-                        <button onClick={this.showCreateNewContact}>Create New Contact</button>
+        return (<>
+                <div className="calls-history-wrapper">
+                    <button className="calls-history-button">History of Calls</button>
+                </div>
+                <div className="main-page-container">
+
+                    <div className="main-page-container__contact-list">
+                        <ContactsList contacts={contacts} onContactSelected={this.getSelectedContact}/>
+                        <div className="button-wrapper">
+                            <button onClick={this.showCreateNewContact}>Create New Contact</button>
+                        </div>
+                    </div>
+                    <div className="create-new-contact-wrapper">
+                        {this.renderCreateForm()}
+                    </div>
+                    <div className="main-page-container__contact-detail">
+                        {this.renderDetails()}
                     </div>
                 </div>
-                <div className="create-new-contact-wrapper">
-                {this.renderCreateForm()}
-                </div>
-                <div className="main-page-container__contact-detail">
-                    {this.renderDetails()}
-                </div>
-            </div>
+            </>
         );
     }
 }

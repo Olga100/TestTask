@@ -31,3 +31,19 @@
     right: 350px;
     top: -50px;
 }
+
+.calls-history-wrapper {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.calls-history-button {
+    font-size: 20px;
+    font-weight: 800;
+    color: lightcyan;
+    background-color: transparent;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+}
