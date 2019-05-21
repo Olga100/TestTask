@@ -14,7 +14,8 @@ class MainPageView extends Component {
 
         this.state = {
             isContactEditing: false,
-            isContactCreating: false
+            isContactCreating: false,
+            isCallHistory: false
         };
     }
 
@@ -35,8 +36,14 @@ class MainPageView extends Component {
     receiveCallHistory = id => this.props.loadCallHistory(id)
         .then((response) => {
             const callHistoryArray = Object.assign({},response);
-            console.log("x " + JSON.stringify(callHistoryArray.callHistory));
+            this.setState({isCallHistory: true})
         } );
+
+    renderCallHistory = (arrayOfObject) => {
+        if(this.state.isCallHistory) {
+       return arrayOfObject.map(item => <li> {item.type} call: {item.timestamp} duration: {item.duration} sec </li>)
+        }
+    };
 
     renderDetails() {
         const {selectedContact, startCreateContact, startUpdateContact, startDeleteContact} = this.props;
@@ -57,11 +64,12 @@ class MainPageView extends Component {
                     onSubmit={data => this.handleUpdateContact(data)}
                     onCancel={() => this.setState({isContactEditing: false})}/>;
             } else {
+
                 return <ContactDetails contact={selectedContact}
                                        onEdit={() => this.setState({isContactEditing: true})}
                                        onDelete={startDeleteContact}
                                        showCallHistory={this.receiveCallHistory}
-                                       callHistoryInfo={null}/>;
+                                       callHistoryInfo={this.renderCallHistory(this.props.callHistoryArray)}/>;
             }
         }
     }

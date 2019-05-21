@@ -8,14 +8,19 @@ module.exports = {
             email: "example1@gmail.com",
             callHistory: [
                 {
-                    timestamp: "2019-05-20T11:12:12",
+                    timestamp: "2019-05-20 11:12:12",
                     type: "Incoming",
                     duration: 35
                 },
                 {
-                    timestamp: "2019-05-20T13:15:12",
+                    timestamp: "2019-05-20 13:15:12",
                     type: "Outcoming",
                     duration: 63
+                },
+                {
+                    timestamp: "2019-03-22 15:12:12",
+                    type: "Incoming",
+                    duration: 35
                 }
             ]
         },
@@ -35,12 +40,12 @@ module.exports = {
             email: "example3@gmail.com",
             callHistory:[
                 {
-                    timestamp: "2019-04-20T11:12:22",
+                    timestamp: "2019-04-20 11:12:22",
                     type: "Incoming",
                     duration: 35
                 },
                 {
-                    timestamp: "2019-03-20T13:15:10",
+                    timestamp: "2019-03-20 13:15:10",
                     type: "Outcoming",
                     duration: 63
                 }
