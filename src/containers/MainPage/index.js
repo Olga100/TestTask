@@ -36,25 +36,29 @@ class MainPageView extends Component {
     receiveCallHistory = id => this.props.loadCallHistory(id)
         .then((response) => {
             const callHistoryArray = Object.assign({},response);
-            this.setState({isCallHistory: true})
+            //this.setState({isCallHistory: true})
+             this.state.isCallHistory ? this.setState({isCallHistory: false}) : this.setState({isCallHistory: true});
         } );
 
     renderCallHistory = (arrayOfObject) => {
         if(this.state.isCallHistory) {
             if(arrayOfObject.length > 0) {
-                return arrayOfObject.map(item => <li> {item.type} call: {item.timestamp} duration: {item.duration} sec </li>)
+                return arrayOfObject.map(item => <li key={Math.random()} > {item.type} call: {item.timestamp} duration: {item.duration} sec </li>)
             } else {
                 return <div> Call history is empty </div>
             }
         }
     };
 
+    handleLoadSelectedContact = (id) => {
+        this.setState({isCallHistory: false});
+        this.props.loadSelectedContact(id) ;
+
+    };
+
     renderDetails() {
         const {selectedContact, startCreateContact, startUpdateContact, startDeleteContact} = this.props;
         const {isContactEditing, isContactCreating} = this.state;
-
-        let callHistoryInfo;
-        console.log("R3 " + callHistoryInfo);
 
         if (isContactCreating) {
             return <ContactDetailsForm
@@ -85,7 +89,7 @@ class MainPageView extends Component {
                 <div className="main-page-container">
 
                     <div className="main-page-container__contact-list">
-                        <ContactsList contacts={contacts} onContactSelected={loadSelectedContact}/>
+                        <ContactsList contacts={contacts} onContactSelected={(id) => this.handleLoadSelectedContact(id)}/>
                         <div className="button-wrapper">
                             <button onClick={() => this.setState({isContactCreating: true})}>Create New Contact</button>
                         </div>
