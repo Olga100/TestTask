@@ -32,6 +32,18 @@ export function getContact(id) {
         .then(result => result.data.data.Contact);
 }
 
+export function getCallHistory(id) {
+    const query = `
+      {
+        Contact(id: ${id})  {
+          callHistory
+        }    
+      }`;
+
+    return axios.post(serverUrl, { query })
+        .then(result => result.data.data.Contact.callHistory);
+}
+
 export function createContact(contact) {
     const query = `
       mutation {

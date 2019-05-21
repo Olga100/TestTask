@@ -25,7 +25,7 @@ module.exports = {
             lastName: "Ivanoff",
             phone: "234567890",
             email: "example2@gmail.com",
-            historyCall: null
+            callHistory: []
         },
         {
             id: 3,
@@ -33,7 +33,18 @@ module.exports = {
             lastName: "Neivanoff",
             phone: "345678901",
             email: "example3@gmail.com",
-            historyCall: null
+            callHistory:[
+                {
+                    timestamp: "2019-04-20T11:12:22",
+                    type: "Incoming",
+                    duration: 35
+                },
+                {
+                    timestamp: "2019-03-20T13:15:10",
+                    type: "Outcoming",
+                    duration: 63
+                }
+            ]
         }
     ]
 }

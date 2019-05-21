@@ -1,8 +1,9 @@
-import {SET_CONTACTS_LIST, SET_SELECTED_CONTACT, CREATE_CONTACT, UPDATE_CONTACT, DELETE_CONTACT} from'../constants';
+import {SET_CONTACTS_LIST, SET_SELECTED_CONTACT, CREATE_CONTACT, UPDATE_CONTACT, DELETE_CONTACT, SET_CALL_HISTORY} from'../constants';
 
 const initialState = {
     contacts: [],
-    selectedContact: null
+    selectedContact: null,
+    callHistory: []
 };
 
 export default function mainReducer(state = initialState, action) {
@@ -11,6 +12,8 @@ export default function mainReducer(state = initialState, action) {
             return {...state, contacts: action.contacts};
         case SET_SELECTED_CONTACT:
             return {...state, selectedContact: action.selectedContact};
+        case SET_CALL_HISTORY:
+            return {...state, callHistory: action.callHistory};
         case CREATE_CONTACT:
             return {...state, contacts: [...state.contacts, action.contact], selectedContact: action.contact};
         case UPDATE_CONTACT:

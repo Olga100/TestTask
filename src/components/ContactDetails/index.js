@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import './ContactDetails.css';
 
 function ContactDetails(props) {
-    const {onEdit, onDelete} = props;
+
+    const {onEdit, onDelete, showCallHistory, callHistoryInfo} = props;
     const {id, firstName, lastName, phone, email} = props.contact;
 
     return <div className="contact-detail-container">
@@ -20,6 +21,12 @@ function ContactDetails(props) {
         <div className="button-wrapper">
             <button onClick={onEdit}>Edit</button>
             <button onClick={() => onDelete(id)}>Delete</button>
+        </div>
+        <div className="calls-history-wrapper">
+            <button className="calls-history-button" onClick={() => showCallHistory(id)}>History of Calls</button>
+            <div className="calls-history-info">
+                {callHistoryInfo}
+            </div>
         </div>
     </div>;
 }
