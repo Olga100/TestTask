@@ -4,123 +4,92 @@ import {connect} from 'react-redux';
 import ContactsList from '../../components/ContactsList';
 import ContactDetails from '../../components/ContactDetails';
 import ContactDetailsForm from '../../components/ContactDetailsForm';
-import {loadContacts, loadSelectedContact, editDetails, endEditDetails} from '../../actions/actions';
-
+import {loadContacts, loadSelectedContact, startCreateContact, startUpdateContact, startDeleteContact} from '../../actions/actions';
 
 import './MainPage.css';
-
 
 class MainPageView extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            createNewContact: false
+            isContactEditing: false,
+            isContactCreating: false
         };
     }
 
-
     componentDidMount() {
-        const {loadContacts} = this.props;
-        loadContacts()
+        this.props.loadContacts();
     }
 
-    getSelectedContact = (id) => {
-        const {loadSelectedContact} = this.props;
+    handleCreateContact(contact) {
+        this.props.startCreateContact(contact)
+            .then(() => this.setState({isContactCreating: false}));
+    }
 
-        loadSelectedContact(id);
-    };
-
-    showCreateNewContact = () => {
-        this.setState({createNewContact: true});
-    };
-
-    hideCreateNewContact = () => {
-        this.setState({createNewContact: false});
-    };
-
-    handleEditDetails = () => {
-        const {editDetails} = this.props;
-
-        this.setState({createNewContact: false}, editDetails);
-    };
-
-    renderCreateForm = () => {
-        const {createNewContact} = this.state;
-
-        if (createNewContact) {
-            const {endEditDetails} = this.props;
-
-            endEditDetails();
-            return <ContactDetailsForm
-                onSubmit={() => console.log("created new Contact!")}
-                onCancel={ this.hideCreateNewContact}/>
-        }
-    };
+    handleUpdateContact(contact) {
+        this.props.startUpdateContact(contact)
+            .then(() => this.setState({isContactEditing: false}));
+    }
 
     renderDetails() {
-        const {selectedContact, endEditDetails, isEditingDetails} = this.props;
+        const {selectedContact, startCreateContact, startUpdateContact, startDeleteContact} = this.props;
+        const {isContactEditing, isContactCreating} = this.state;
 
-        if (selectedContact) {
-            if (isEditingDetails) {
+        if (isContactCreating) {
+            return <ContactDetailsForm
+                onSubmit={data => this.handleCreateContact(data)}
+                onCancel={() => this.setState({isContactCreating: false})}/>
+        }
+        else if (selectedContact) {
+            if (isContactEditing) {
                 return <ContactDetailsForm
                     initialValues={selectedContact}
-                    onSubmit={() => console.log({selectedContact})}
-                    onCancel={endEditDetails}/>;
+                    onSubmit={data => this.handleUpdateContact(data)}
+                    onCancel={() => this.setState({isContactEditing: false})}/>;
             } else {
-                return (<div>
-                    <ContactDetails contact={selectedContact}/>
-                    <div className="button-wrapper">
-                        <button onClick={this.handleEditDetails}>Edit</button>
-                        <button onClick={null}>Delete</button>
-                    </div>
-                </div>);
+                return <ContactDetails contact={selectedContact}
+                    onEdit={() => this.setState({isContactEditing: true})}
+                    onDelete={startDeleteContact}/>;
             }
-        } else {
-            return null;
         }
     }
 
     render() {
-        const {contacts} = this.props;
+        const {contacts, loadSelectedContact} = this.props;
 
-
-        return (<>
+        return (<div>
                 <div className="calls-history-wrapper">
                     <button className="calls-history-button">History of Calls</button>
                 </div>
                 <div className="main-page-container">
 
                     <div className="main-page-container__contact-list">
-                        <ContactsList contacts={contacts} onContactSelected={this.getSelectedContact}/>
+                        <ContactsList contacts={contacts} onContactSelected={loadSelectedContact}/>
                         <div className="button-wrapper">
-                            <button onClick={this.showCreateNewContact}>Create New Contact</button>
+                            <button onClick={() => this.setState({isContactCreating: true})}>Create New Contact</button>
                         </div>
-                    </div>
-                    <div className="create-new-contact-wrapper">
-                        {this.renderCreateForm()}
                     </div>
                     <div className="main-page-container__contact-detail">
                         {this.renderDetails()}
                     </div>
                 </div>
-            </>
+            </div>
         );
     }
 }
 
-
 const mapStateToProps = (state) => ({
     contacts: state.main.contacts,
-    selectedContact: state.main.selectedContact,
-    isEditingDetails: state.main.isEditingDetails,
+    selectedContact: state.main.selectedContact
 });
 
 const mapDispatchToProps = {
     loadContacts,
     loadSelectedContact,
-    editDetails,
-    endEditDetails
+    startCreateContact,
+    startUpdateContact,
+    startDeleteContact
 };
 
 const MainPage = connect(mapStateToProps, mapDispatchToProps)(MainPageView);

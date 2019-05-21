@@ -4,9 +4,9 @@ import './ContactDetailsForm.css'
 
 class ContactDetailsForm extends Component {
     render () {
-        const {onSubmit, onCancel} = this.props;
+        const {onCancel, handleSubmit, onSubmit} = this.props;
         return (
-            <form className="contact-form" onSubmit={onSubmit}>
+            <form className="contact-form" onSubmit={handleSubmit(onSubmit)}>
                 <h2> Contact Form: </h2>
                 <Field
                     name="firstName"
