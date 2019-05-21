@@ -6,7 +6,18 @@ module.exports = {
             lastName: "Ivanoff",
             phone: "123456789",
             email: "example1@gmail.com",
-            historyCall: ["5/20/2019, 12:02:07 AM", "5/21/2019, 12:10:11 AM"]
+            callHistory: [
+                {
+                    timestamp: "2019-05-20T11:12:12",
+                    type: "Incoming",
+                    duration: 35
+                },
+                {
+                    timestamp: "2019-05-20T13:15:12",
+                    type: "Outcoming",
+                    duration: 63
+                }
+            ]
         },
         {
             id: 2,
