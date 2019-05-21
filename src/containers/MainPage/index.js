@@ -41,7 +41,11 @@ class MainPageView extends Component {
 
     renderCallHistory = (arrayOfObject) => {
         if(this.state.isCallHistory) {
-       return arrayOfObject.map(item => <li> {item.type} call: {item.timestamp} duration: {item.duration} sec </li>)
+            if(arrayOfObject.length > 0) {
+                return arrayOfObject.map(item => <li> {item.type} call: {item.timestamp} duration: {item.duration} sec </li>)
+            } else {
+                return <div> Call history is empty </div>
+            }
         }
     };
 
