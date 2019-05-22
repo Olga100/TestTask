@@ -46,8 +46,8 @@ export function getCallHistory(id) {
 
 export function createContact(contact) {
     const query = `
-      mutation {
-        createContact(firstName: "${contact.firstName}", lastName: "${contact.lastName}", phone: "${contact.phone}", email: "${contact.email}") {
+      mutation CreateContact($firstName: String!, $lastName: String!, $phone: String!, $email: String!) {
+        createContact(firstName: $firstName, lastName: $lastName, phone: $phone, email: $email, callHistory: []) {
           id
           firstName
           lastName
@@ -56,23 +56,23 @@ export function createContact(contact) {
         }
       }`;
 
-    return axios.post(serverUrl, { query })
+    return axios.post(serverUrl, { query, variables: contact })
         .then(result => result.data.data.createContact);
 }
 
 export function updateContact(contact) {
     const query = `
-      mutation {
-        updateContact(id: "${contact.id}", firstName: "${contact.firstName}", lastName: "${contact.lastName}", phone: "${contact.phone}", email: "${contact.email}") {
+      mutation UpdateContact($id: ID!, $firstName: String!, $lastName: String!, $phone: String!, $email: String!) {
+        updateContact(id: $id, firstName: $firstName, lastName: $lastName, phone: $phone, email: $email) {
           id
           firstName
           lastName
           phone
-          email      
+          email
         }
       }`;
 
-    return axios.post(serverUrl, { query })
+    return axios.post(serverUrl, { query, variables: contact })
         .then(result => result.data.data.updateContact);
 }
 

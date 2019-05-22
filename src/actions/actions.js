@@ -1,6 +1,6 @@
-import {getContactList, getContact, getCallHistory, createContact, updateContact, deleteContact} from '../services/contacts';
+import {getContactList, getContact, createContact, updateContact, deleteContact} from '../services/contacts';
 
-import {SET_CONTACTS_LIST, SET_SELECTED_CONTACT, CREATE_CONTACT, UPDATE_CONTACT, DELETE_CONTACT, SET_CALL_HISTORY} from'../constants';
+import {SET_CONTACTS_LIST, SET_SELECTED_CONTACT, CREATE_CONTACT, UPDATE_CONTACT, DELETE_CONTACT} from'../constants';
 
 export function setContactsList(contacts) {
     return {
@@ -13,13 +13,6 @@ export function setSelectedContact(selectedContact) {
     return {
         type: SET_SELECTED_CONTACT,
         selectedContact
-    }
-}
-
-export function setCallHistory(callHistory) {
-    return {
-        type: SET_CALL_HISTORY,
-        callHistory
     }
 }
 
@@ -55,13 +48,6 @@ export function loadSelectedContact(id) {
     return function (dispatch) {
         return getContact(id)
             .then(response => dispatch(setSelectedContact(response)));
-    }
-}
-
-export function loadCallHistory(id) {
-    return function (dispatch) {
-        return getCallHistory(id)
-            .then(response => dispatch(setCallHistory(response)));
     }
 }
 

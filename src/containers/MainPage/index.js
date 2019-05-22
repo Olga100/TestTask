@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import ContactsList from '../../components/ContactsList';
 import ContactDetails from '../../components/ContactDetails';
 import ContactDetailsForm from '../../components/ContactDetailsForm';
-import {loadContacts, loadSelectedContact, loadCallHistory, startCreateContact, startUpdateContact, startDeleteContact} from '../../actions/actions';
+import {loadContacts, loadSelectedContact, startCreateContact, startUpdateContact, startDeleteContact} from '../../actions/actions';
 
 import './MainPage.css';
 
@@ -14,8 +14,7 @@ class MainPageView extends Component {
 
         this.state = {
             isContactEditing: false,
-            isContactCreating: false,
-            isCallHistory: false
+            isContactCreating: false
         };
     }
 
@@ -33,31 +32,8 @@ class MainPageView extends Component {
             .then(() => this.setState({isContactEditing: false}));
     }
 
-    receiveCallHistory = id => this.props.loadCallHistory(id)
-        .then((response) => {
-            const callHistoryArray = Object.assign({},response);
-            //this.setState({isCallHistory: true})
-             this.state.isCallHistory ? this.setState({isCallHistory: false}) : this.setState({isCallHistory: true});
-        } );
-
-    renderCallHistory = (arrayOfObject) => {
-        if(this.state.isCallHistory) {
-            if(arrayOfObject.length > 0) {
-                return arrayOfObject.map(item => <li key={Math.random()} > {item.type} call: {item.timestamp} duration: {item.duration} sec </li>)
-            } else {
-                return <div> Call history is empty </div>
-            }
-        }
-    };
-
-    handleLoadSelectedContact = (id) => {
-        this.setState({isCallHistory: false});
-        this.props.loadSelectedContact(id) ;
-
-    };
-
     renderDetails() {
-        const {selectedContact, startCreateContact, startUpdateContact, startDeleteContact} = this.props;
+        const {selectedContact, startDeleteContact} = this.props;
         const {isContactEditing, isContactCreating} = this.state;
 
         if (isContactCreating) {
@@ -74,10 +50,8 @@ class MainPageView extends Component {
             } else {
 
                 return <ContactDetails contact={selectedContact}
-                                       onEdit={() => this.setState({isContactEditing: true})}
-                                       onDelete={startDeleteContact}
-                                       showCallHistory={this.receiveCallHistory}
-                                       callHistoryInfo={this.renderCallHistory(this.props.callHistoryArray)}/>;
+                    onEdit={() => this.setState({isContactEditing: true})}
+                    onDelete={startDeleteContact} />;
             }
         }
     }
@@ -89,7 +63,7 @@ class MainPageView extends Component {
                 <div className="main-page-container">
 
                     <div className="main-page-container__contact-list">
-                        <ContactsList contacts={contacts} onContactSelected={(id) => this.handleLoadSelectedContact(id)}/>
+                        <ContactsList contacts={contacts} onContactSelected={loadSelectedContact}/>
                         <div className="button-wrapper">
                             <button onClick={() => this.setState({isContactCreating: true})}>Create New Contact</button>
                         </div>
@@ -113,7 +87,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     loadContacts,
     loadSelectedContact,
-    loadCallHistory,
     startCreateContact,
     startUpdateContact,
     startDeleteContact
